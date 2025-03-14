@@ -32,17 +32,22 @@ with st.sidebar:
 
     with col2:
         st.write("")
-        st.button("", help="add page", icon = ':material/add:', on_click=add_page)
+        st.button("", help="Add page", icon = ':material/add:', on_click=add_page)
 
     with col3:
         st.write("")
-        st.button("", help="delete page", icon = ':material/delete:', on_click=delete_page)
+        st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page)
 
     st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
 
+    #Highligting active session
     for page in st.session_state.pages:
-        if st.button(page, help=f"{page}", use_container_width=True, type="secondary"):
+        is_active = page == st.session_state.current_page
+        button_type = "primary" if is_active else "secondary"
+
+        if st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type):
             st.session_state.current_page = page
+            st.rerun()
 
 if not st.session_state.pages:
     st.info("No active sessions. Click the '+' to start one!")
@@ -50,5 +55,3 @@ if not st.session_state.pages:
 if st.session_state.current_page:
     # Use the chat layout from chat.py
     page_config(st.session_state.current_page)
-
-    
