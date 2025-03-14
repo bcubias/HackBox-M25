@@ -24,6 +24,10 @@ def delete_page():
         del st.session_state.pages[st.session_state.current_page]
         st.session_state.current_page = None
 
+# Function to select active session(page)
+def select_page(page):
+    st.session_state.current_page = page
+
 with st.sidebar:
     col1, col2, col3 = st.columns([3, 1, 1])  
 
@@ -45,9 +49,7 @@ with st.sidebar:
         is_active = page == st.session_state.current_page
         button_type = "primary" if is_active else "secondary"
 
-        if st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type):
-            st.session_state.current_page = page
-            st.rerun()
+        st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,))
 
 if not st.session_state.pages:
     st.info("No active sessions. Click the '+' to start one!")
