@@ -1,0 +1,57 @@
+/* Hide Streamlit's default colored top bar */
+header {visibility: hidden;}
+
+/* Header Container */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1vh;
+    border-bottom: .15rem solid #f0f0f0;
+    z-index: 1000;
+}
+
+/* Title Styling */
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Default Light Mode */
+body {
+    background-color: white;
+    color: black;
+}
+/* Dark Mode Styles (Applied When "dark-mode" Class is Added) */
+.dark-mode body {
+    background-color: #121212 !important;
+    color: white !important;
+}
+
+.dark-mode .header-container {
+    background-color: #1E1E1E !important;
+    color: white !important;
+}
+
+.dark-mode .stButton>button {
+    background-color: #333 !important;
+    color: white !important;
+}
+
+.dark-mode .stTextInput>div>div>input {
+    background-color: #2b2b2b !important;
+    color: white !important;
+}
+
+.dark-mode .stSidebar {
+    background-color: #1E1E1E !important;
+    color: white !important;
+}
