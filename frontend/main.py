@@ -10,6 +10,9 @@ if "current_page" not in st.session_state:
 if "count" not in st.session_state:
     st.session_state.count = 0
 
+if "char_limit" not in st.session_state:
+    st.session_state.char_limit = 4096
+
 def add_page():
     new_id = f"Session {st.session_state.count + 1}"
     st.session_state.count += 1
@@ -35,14 +38,17 @@ with st.sidebar:
         st.write("")
         st.button("", help="delete page", icon = ':material/delete:', on_click=delete_page)
 
+    st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
+
     for page in st.session_state.pages:
         if st.button(page, help=f"{page}", use_container_width=True, type="secondary"):
             st.session_state.current_page = page
 
-
+if not st.session_state.pages:
+    st.info("No active sessions. Click the '+' to start one!")
             
 if st.session_state.current_page:
     # Use the chat layout from chat.py
-    st.set_page_config = page_config(st.session_state.current_page)
+    page_config(st.session_state.current_page)
 
     
