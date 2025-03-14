@@ -40,7 +40,7 @@ with st.sidebar:
 
     st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
 
-    #Highligting active session
+    # Highligting active session
     for page in st.session_state.pages:
         is_active = page == st.session_state.current_page
         button_type = "primary" if is_active else "secondary"
