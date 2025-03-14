@@ -30,6 +30,9 @@ if "count" not in st.session_state:
 if "char_limit" not in st.session_state:
     st.session_state.char_limit = 4096
 
+if "open_settings" not in st.session_state:
+    st.session_state.open_settings = None
+
 def add_page():
     new_id = f"Session {st.session_state.count + 1}"
     st.session_state.count += 1
@@ -65,7 +68,21 @@ with st.sidebar:
     for page in st.session_state.pages:
         is_active = page == st.session_state.current_page
         button_type = "primary" if is_active else "secondary"
-        st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,))
+
+        col1, col2 = st.columns([4, 1])
+
+        with col1:
+            st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,))
+
+        with col2:
+            if st.button(":material/more_horiz:", key=f"menu_{page}", help="More options"):
+                st.session_state.open_settings = None if st.session_state.open_settings == page else page
+
+        # Show the settings menu
+        if st.session_state.open_settings == page:
+            with st.expander(":material/settings: Options", expanded=True):
+                st.button(":material/edit: Rename", key=f"rename_btn_{page}")
+                st.button(":material/delete: Remove", key=f"delete_btn_{page}")
 
 if not st.session_state.pages:
     st.info("No active sessions. Click the '+' to start one!")
