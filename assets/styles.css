@@ -1,0 +1,26 @@
+/* Hide Streamlit's default colored top bar */
+header {visibility: hidden;}
+
+/* Header Container */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1vh;
+    border-bottom: .15rem solid #f0f0f0;
+    z-index: 1000;
+}
+
+/* Title Styling */
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    white-space: nowrap;
+}
