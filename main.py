@@ -1,5 +1,22 @@
 import streamlit as st
 from chat import page_config
+import pathlib
+
+# Load CSS File (1/2)
+def load_css(file_path):
+    with open(file_path) as f:
+        st.html(f"<style>{f.read()}</style>")
+
+# Load CSS File (2/2)
+css_path = pathlib.Path("assets/styles.css")
+load_css(css_path)
+
+# Header and Title
+st.markdown("""
+<div class="header-container">
+     <span class="header-title">PrompterAI</span>
+</div>
+""", unsafe_allow_html=True)
 
 if "pages" not in st.session_state:
     st.session_state.pages = {}
@@ -39,8 +56,6 @@ with st.sidebar:
         if st.button(page, help=f"{page}", use_container_width=True, type="secondary"):
             st.session_state.current_page = page
 
-
-            
 if st.session_state.current_page:
     # Use the chat layout from chat.py
     st.set_page_config = page_config(st.session_state.current_page)
