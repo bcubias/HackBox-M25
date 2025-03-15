@@ -12,11 +12,8 @@ css_path = pathlib.Path("assets/styles.css")
 load_css(css_path)
 
 # Header and Title
-st.markdown("""
-<div class="header-container">
-     <span class="header-title">PrompterAI</span>
-</div>
-""", unsafe_allow_html=True)
+st.title("PrompterAI")
+st.divider()
 
 if "pages" not in st.session_state:
     st.session_state.pages = {}
