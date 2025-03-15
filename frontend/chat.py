@@ -14,7 +14,7 @@ def page_config(page_id):
         # Get and log response and change
         response = f"Echo: {prompt}"
         st.session_state.pages[page_id][1].append(response)
-        st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+        st.session_state.pages[page_id][0].append({"role": "ai", "content": response})
 
     # Display chat messages
     with col1: 
@@ -25,4 +25,5 @@ def page_config(page_id):
     # Display logs
     with col2:
         for log in st.session_state.pages[page_id][1]:
-            st.write(log)
+            st.chat_message("ai").write(log)
+            st.markdown("---")
