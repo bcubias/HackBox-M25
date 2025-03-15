@@ -2,6 +2,8 @@ import streamlit as st
 from chat import page_config
 from PIL import Image
 
+st.set_page_config(layout="wide")
+
 # Load the image
 image_path = "assets/prompterai-transparent.png"
 image = Image.open(image_path)

@@ -1,5 +1,4 @@
 import streamlit as st
-import sys
 from pipeline.mainpipeline import optimizted_prompt
 
 def page_config(page_id):

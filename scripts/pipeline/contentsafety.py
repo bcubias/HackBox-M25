@@ -32,4 +32,4 @@ def safety_check(message):
     sexual_result = next(item for item in response.categories_analysis if item.category == TextCategory.SEXUAL)
     violence_result = next(item for item in response.categories_analysis if item.category == TextCategory.VIOLENCE)
 
-    return max(hate_result.score, self_harm_result.score, sexual_result.score, violence_result.score)
+    return max(hate_result.severity, self_harm_result.severity, sexual_result.severity, violence_result.severity)
