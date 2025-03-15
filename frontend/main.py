@@ -2,16 +2,8 @@ import streamlit as st
 from chat import page_config
 import pathlib
 
-# Load CSS file
-def load_css(file_path):
-    
-    with open(file_path) as f:
-        st.html(f"<style>{f.read()}</style>")
-
-css_path = pathlib.Path("assets/styles.css")
-load_css(css_path)
-
 # Header and Title
+st.set_page_config(layout="wide")
 st.title("PrompterAI")
 st.divider()
 
@@ -55,8 +47,9 @@ def toggle_settings(page):
 def select_page(page):
     st.session_state.current_page = page
 
+
 with st.sidebar:
-    st.logo(icon, icon_image=logo)
+ # st.logo(icon, icon_image=logo)
 
     col1, col2, col3 = st.columns([3, 1, 1])  
 
