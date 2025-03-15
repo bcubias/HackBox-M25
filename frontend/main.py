@@ -2,6 +2,19 @@ import streamlit as st
 from chat import page_config
 import pathlib
 
+# Load CSS file
+def load_css(file_path):
+    
+    with open(file_path) as f:
+        st.html(f"<style>{f.read()}</style>")
+
+css_path = pathlib.Path("assets/styles.css")
+load_css(css_path)
+
+# Header and Title
+st.title("PrompterAI")
+st.divider()
+
 if "pages" not in st.session_state:
     st.session_state.pages = {}
 
@@ -23,10 +36,20 @@ def add_page():
     st.session_state.pages[new_id] = [[], []]
     st.session_state.current_page = new_id
 
-def delete_page():
-    if st.session_state.current_page:
-        del st.session_state.pages[st.session_state.current_page]
+def delete_page(page):
+    if page == None:
+        return
+
+    if st.session_state.current_page:        
         st.session_state.current_page = None
+
+    del st.session_state.pages[page]
+
+def toggle_settings(page):
+    if st.session_state.open_settings == None or st.session_state.open_settings != page:
+        st.session_state.open_settings = page
+    else:
+        st.session_state.open_settings = None
 
 # Function to select active session(page)
 def select_page(page):
@@ -46,7 +69,7 @@ with st.sidebar:
 
     with col3:
         st.write("")
-        st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page)
+        st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page, args=(st.session_state.current_page,))
 
     st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
 
@@ -61,18 +84,13 @@ with st.sidebar:
             st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,))
 
         with col2:
-            if st.button(":material/more_horiz:", key=f"menu_{page}", help="More options"):
-                st.session_state.open_settings = None if st.session_state.open_settings == page else page
-
-        # Show the settings menu
+            st.button(":material/more_horiz:", help="More options", key=f"more_btn_{page}", on_click=toggle_settings, args=(page,))
+        
         if st.session_state.open_settings == page:
-            with st.expander(":material/settings: Options", expanded=True):
-                st.button(":material/edit: Rename", key=f"rename_btn_{page}")
-                st.button(":material/delete: Remove", key=f"delete_btn_{page}")
-
-if not st.session_state.pages:
-    st.info("No active sessions. Click the '+' to start one!")
-            
+            # st.button(":material/edit: Rename", key=f"rename_btn_{page}")
+            st.button(":material/delete: Remove", key=f"delete_btn_{page}" , on_click=delete_page, args=(page,))
+                
 if st.session_state.current_page:
-    # Use the chat layout from chat.py
     page_config(st.session_state.current_page)
+else:
+    st.info("No active sessions. Click the '+' or selct a session to start chatting.")
