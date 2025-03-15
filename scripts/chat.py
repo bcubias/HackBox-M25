@@ -1,4 +1,5 @@
 import streamlit as st
+from pipeline.mainpipeline import optimizted_prompt
 
 def page_config(page_id):
     # Page layout
@@ -12,8 +13,10 @@ def page_config(page_id):
         st.session_state.pages[page_id][0].append({"role": "user", "content": prompt})
 
         # Get and log response and change
-        response = f"Echo: {prompt}"
-        st.session_state.pages[page_id][1].append(response)
+        message = optimizted_prompt(prompt)
+        response = message["prompt"]
+
+        st.session_state.pages[page_id][1].append(message["log"])
         st.session_state.pages[page_id][0].append({"role": "ai", "content": response})
 
     # Display chat messages

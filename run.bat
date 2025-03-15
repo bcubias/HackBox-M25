@@ -1,3 +1,3 @@
 @echo off
-streamlit run frontend/main.py
+streamlit run scripts/main.py
 pause
