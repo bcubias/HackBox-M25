@@ -1,6 +1,5 @@
 import streamlit as st
 from chat import page_config
-import pathlib
 from PIL import Image
 
 # Load the image
