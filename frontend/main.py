@@ -3,6 +3,7 @@ from chat import page_config
 import pathlib
 
 # Header and Title
+st.set_page_config(layout="wide")
 st.title("PrompterAI")
 st.divider()
 
@@ -28,6 +29,9 @@ def add_page():
     st.session_state.current_page = new_id
 
 def delete_page(page):
+    if page == None:
+        return
+
     if st.session_state.current_page:        
         st.session_state.current_page = None
 
