@@ -64,8 +64,6 @@ def toggle_settings(page):
 def select_page(page):
     st.session_state.current_page = page
 
-    st.sidebar.logo(logo, size="large", icon_image=full_logo)
-
 with st.sidebar:
 
     col1, col2, col3 = st.columns([3, 1, 1])  
