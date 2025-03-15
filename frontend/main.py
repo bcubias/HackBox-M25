@@ -1,11 +1,28 @@
 import streamlit as st
 from chat import page_config
 import pathlib
+from PIL import Image
 
-# Header and Title
-st.set_page_config(layout="wide")
-st.title("PrompterAI")
-st.divider()
+# Load the image
+image_path = "assets/prompterai-transparent.png"
+image = Image.open(image_path)
+
+# Auto-crop to remove white space
+image = image.crop(image.getbbox())  
+
+# Resize to 320x40
+new_size = (320, 40)  
+resized_image = image.resize(new_size, Image.LANCZOS)
+
+# Save optimized image
+resized_logo_path = "assets/prompterai-logo-optimized.png"
+resized_image.save(resized_logo_path, "PNG")
+
+logo = "assets/prompterai-transparent.png"
+icon = "assets/transparent-brain.PNG"
+
+logo_path = "assets/prompterai-logo-optimized.png"
+st.logo(logo_path, size="large", icon_image=icon)
 
 if "pages" not in st.session_state:
     st.session_state.pages = {}
@@ -47,9 +64,9 @@ def toggle_settings(page):
 def select_page(page):
     st.session_state.current_page = page
 
+    st.sidebar.logo(logo, size="large", icon_image=full_logo)
 
 with st.sidebar:
- # st.logo(icon, icon_image=logo)
 
     col1, col2, col3 = st.columns([3, 1, 1])  
 
