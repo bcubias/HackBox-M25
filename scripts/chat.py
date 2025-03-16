@@ -2,8 +2,8 @@ import streamlit as st
 from pipeline.mainpipeline import optimizted_prompt
 import azure.cognitiveservices.speech as speechsdk
 
-key = st.secrets.speech_key
-endpoint = st.secrets.speech_endpoint
+key = st.secrets.key
+endpoint = st.secrets.endpoint
 region = st.secrets.speech_region
 
 
