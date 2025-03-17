@@ -5,8 +5,8 @@ from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import HttpResponseError
 from azure.ai.contentsafety.models import AnalyzeTextOptions
 
-key = st.secrets.key
-endpoint = st.secrets.endpoint
+key = st.secrets.Azurekey
+endpoint = st.secrets.Azureendpoint
 
 def safety_check(message):
     # Create a Content Safety client

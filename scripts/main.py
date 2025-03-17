@@ -66,7 +66,7 @@ with st.sidebar:
 
     st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
 
-    # Highligting active session
+    # Highlighting active session
     for page in st.session_state.pages:
         is_active = page == st.session_state.current_page
         button_type = "primary" if is_active else "secondary"
@@ -80,7 +80,6 @@ with st.sidebar:
             st.button(":material/more_horiz:", help="More options", key=f"more_btn_{page}", on_click=toggle_settings, args=(page,))
         
         if st.session_state.open_settings == page:
-            # st.button(":material/edit: Rename", key=f"rename_btn_{page}")
             st.button(":material/delete: Remove", key=f"delete_btn_{page}" , on_click=delete_page, args=(page,))
                 
 if st.session_state.current_page:
