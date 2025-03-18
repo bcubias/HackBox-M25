@@ -1,38 +1,33 @@
-import requests
 import streamlit as st
+from openai import AzureOpenAI
+
+# ✅ Initialize Azure OpenAI Client
+client = AzureOpenAI(
+    api_key=st.secrets["Gptkey"],  # ✅ Use your Azure OpenAI GPT-4o key
+    api_version="2024-10-21",   # ✅ Ensure this is the correct API version
+    azure_endpoint=st.secrets["Gptendpoint"]  # ✅ Use your Azure OpenAI GPT-4o endpoint
+)
 
 def chat_with_gpt4o(prompt):
     """
-    Sends the user prompt to GPT-4o via Azure OpenAI and retrieves the AI's response.
+    Sends the user prompt to GPT-4o with streaming enabled for faster responses.
     """
-    api_key = st.secrets["Gptkey"] 
-    endpoint = st.secrets["Gptendpoint"] 
-
-    headers = {
-        "Content-Type": "application/json",
-        "api-key": api_key
-    }
-
-    
-    deployment_name = "gpt-4o"  
-
-    data = {
-        "messages": [{"role": "user", "content": prompt}]
-    }
+    if not prompt:
+        return "No input provided."
 
     try:
-        response = requests.post(
-            f"{endpoint}/openai/deployments/{deployment_name}/chat/completions?api-version=2024-10-21",
-            headers=headers, json=data
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            stream=True  # ✅ Enable streaming
         )
 
-        response_json = response.json()
-        print("GPT-4o Full Response:", response_json)  
+        full_response = ""
+        for chunk in response:
+            if chunk.choices:
+                full_response += chunk.choices[0].delta.content or ""
 
-        if "choices" in response_json:
-            return response_json["choices"][0]["message"]["content"]
-        else:
-            return f"Error: 'choices' key not found in response - {response_json}"
+        return full_response.strip()
 
     except Exception as e:
         return f"Error: {str(e)}"
