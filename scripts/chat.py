@@ -3,10 +3,9 @@ from pipeline.chatmodel import chat_with_gpt4o
 from pipeline.mainpipeline import optimizted_prompt
 import azure.cognitiveservices.speech as speechsdk
 
-key = st.secrets.key
-endpoint = st.secrets.endpoint
+key = st.secrets.Azurekey
+endpoint = st.secrets.Azureendpoint
 region = st.secrets.speech_region
-
 
 def page_config(page_id):
     st.title(page_id)
