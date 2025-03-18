@@ -8,9 +8,6 @@ client = AzureOpenAI(
 )
 
 def chat_with_gpt4o(prompt):
-    """
-    Sends the user prompt to GPT-4o with streaming enabled for faster responses.
-    """
     if not prompt:
         return "No input provided."
 
@@ -18,7 +15,7 @@ def chat_with_gpt4o(prompt):
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
-            stream=True  # ✅ Enable streaming
+            stream=True  
         )
 
         full_response = ""
