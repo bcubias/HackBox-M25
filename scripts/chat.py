@@ -1,25 +1,28 @@
 import streamlit as st
+from pipeline.chatmodel import chat_with_gpt4o
 from pipeline.mainpipeline import optimizted_prompt
 
 def page_config(page_id):
-    """
-    Configures the chat page for a given session.
-    """
     st.title(page_id)
 
     col1, col2 = st.columns([5, 2])
 
-    # ✅ Take User Input
+    # User Input
     if prompt := st.chat_input("Enter your message:", max_chars=st.session_state.char_limit):
-        # ✅ Step 1: Optimize User Prompt (includes grammar check)
+        # Optimize Prompt
         optimized = optimizted_prompt(prompt)
 
-        # ✅ Step 2: Log Optimized Input
+        # Save optimized prompt and log
         st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
-
-        # ✅ Step 3: Display AI Logs
         st.session_state.pages[page_id][1].append(optimized["log"])
-
+        
+        # Check for harmful content 
+        if optimized["harm"]:
+            st.session_state.pages[page_id][0].append({"role": "assistant", "content": "Content is not safe, please try again."})
+        else:
+            response = chat_with_gpt4o(optimized["prompt"])
+            st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+        
     # Display Messages & Logs
     with col1:
         for message in st.session_state.pages[page_id][0]:

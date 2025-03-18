@@ -1,11 +1,10 @@
 import streamlit as st
 from openai import AzureOpenAI
 
-# ✅ Initialize Azure OpenAI Client
 client = AzureOpenAI(
-    api_key=st.secrets["Gptkey"],  # ✅ Use your Azure OpenAI GPT-4o key
-    api_version="2024-10-21",   # ✅ Ensure this is the correct API version
-    azure_endpoint=st.secrets["Gptendpoint"]  # ✅ Use your Azure OpenAI GPT-4o endpoint
+    api_key=st.secrets["Gptkey"],  
+    api_version="2024-10-21",  
+    azure_endpoint=st.secrets["Gptendpoint"]  
 )
 
 def chat_with_gpt4o(prompt):
