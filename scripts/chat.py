@@ -1,4 +1,5 @@
 import streamlit as st
+from pipeline.chatmodel import chat_with_gpt4o
 from pipeline.mainpipeline import optimizted_prompt
 import azure.cognitiveservices.speech as speechsdk
 
@@ -8,44 +9,46 @@ region = st.secrets.speech_region
 
 
 def page_config(page_id):
-    # Page layout
     st.title(page_id)
 
     col1, col2 = st.columns([5, 2])
-    speech_to_text = st.button("Speech to Text")
-    
-    # Chat input 
-    if prompt := st.chat_input("What is up?", max_chars=st.session_state.char_limit):
-        # Log user input
-        st.session_state.pages[page_id][0].append({"role": "user", "content": prompt})
 
+    speech_to_text = st.button("Speech to Text")
+  
+    # User Input
+    if prompt := st.chat_input("Enter your message:", max_chars=st.session_state.char_limit):
         respond(prompt, page_id)
-        
+            
     if speech_to_text:
         speech = recognize_microphone(key, region)
         if speech:
-            st.session_state.pages[page_id][0].append({"role": "user", "content": speech})
             respond(speech, page_id)
-
-    # Display chat messages
-    with col1: 
+        
+    # Display Messages & Logs
+    with col1:
         for message in st.session_state.pages[page_id][0]:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    # Display logs
     with col2:
         for log in st.session_state.pages[page_id][1]:
             st.chat_message("ai").write(log)
             st.markdown("---")
     
 def respond(prompt, page_id):
-    # Get and log response and change
-    message = optimizted_prompt(prompt)
-    response = message["prompt"]
+      # Optimize Prompt
+      optimized = optimizted_prompt(prompt)
 
-    st.session_state.pages[page_id][1].append(message["log"])
-    st.session_state.pages[page_id][0].append({"role": "ai", "content": response})
+      # Save optimized prompt and log
+      st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
+      st.session_state.pages[page_id][1].append(optimized["log"])
+
+      # Check for harmful content 
+      if optimized["harm"]:
+          st.session_state.pages[page_id][0].append({"role": "assistant", "content": "Content is not safe, please try again."})
+      else:
+          response = chat_with_gpt4o(optimized["prompt"])
+          st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object

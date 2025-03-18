@@ -1,13 +1,20 @@
-from . import contentsafety
+from . import contentsafety, grammar, chatmodel
 
 def optimizted_prompt(prompt):
     returnmes = {}
-    returnmes["prompt"] = prompt
 
-    harm = contentsafety.safety_check(prompt)
-    returnmes["log"] = f"Content is safe"
+    # grammar check will happen here
+    corrected_prompt = prompt
+    returnmes["log"] = f"grammar log"
+    returnmes["prompt"] = corrected_prompt
+
+    harm = contentsafety.safety_check(corrected_prompt)
 
     if harm >= 4:
-        returnmes["log"] = f"Content is not safe Leavel: {harm}"
+        returnmes["log"] += f" | Content is not safe Level: {harm}"
+        returnmes["harm"] = 1
+    else:
+        # other operations will take place here
+        returnmes["harm"] = 0
     
     return returnmes
