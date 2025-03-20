@@ -39,13 +39,10 @@ def respond(prompt, page_id):
         st.write("Analyzing user input...")
 
         # Optimize Prompt
-        optimized = optimizted_prompt(prompt)
-
-        st.write("Generating optimized version...")
+        optimized = optimizted_prompt(prompt, status)
 
         # Save log
         st.session_state.pages[page_id][1].append(optimized["log"])
-        st.write("Checking for harmful content...")
 
         # Check for harmful content 
         st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
