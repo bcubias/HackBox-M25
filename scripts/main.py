@@ -21,6 +21,9 @@ if "count" not in st.session_state:
 if "open_settings" not in st.session_state:
     st.session_state.open_settings = None
 
+if "running" not in st.session_state:
+    st.session_state.running = False
+
 def add_page():
     new_id = f"Session {st.session_state.count + 1}"
     st.session_state.count += 1
@@ -55,11 +58,11 @@ with st.sidebar:
 
     with col2:
         st.write("")
-        st.button("", help="Add page", icon = ':material/add:', on_click=add_page)
+        st.button("", help="Add page", icon = ':material/add:', on_click=add_page, disabled=st.session_state.running)
 
     with col3:
         st.write("")
-        st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page, args=(st.session_state.current_page,))
+        st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page, args=(st.session_state.current_page,), disabled=st.session_state.running)
 
     # Highlighting active session
     for page in st.session_state.pages:
@@ -69,13 +72,13 @@ with st.sidebar:
         col1, col2 = st.columns([4, 1])
 
         with col1:
-            st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,))
+            st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, on_click=select_page, args=(page,), disabled=st.session_state.running)
 
         with col2:
-            st.button(":material/more_horiz:", help="More options", key=f"more_btn_{page}", on_click=toggle_settings, args=(page,))
+            st.button(":material/more_horiz:", help="More options", key=f"more_btn_{page}", on_click=toggle_settings, args=(page,), disabled=st.session_state.running)
         
         if st.session_state.open_settings == page:
-            st.button(":material/delete: Remove", key=f"delete_btn_{page}" , on_click=delete_page, args=(page,))
+            st.button(":material/delete: Remove", key=f"delete_btn_{page}" , on_click=delete_page, args=(page,), disabled=st.session_state.running)
                 
 if st.session_state.current_page:
     page_config(st.session_state.current_page)

@@ -12,10 +12,10 @@ def page_config(page_id):
 
     col1, col2 = st.columns([5, 2])
 
-    speech_to_text = st.button("Speech to Text")
+    speech_to_text = st.button("Speech to Text", disabled=st.session_state.running)
   
     # User Input
-    if prompt := st.chat_input("Enter your message:", max_chars=4096):
+    if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable()):
         respond(prompt, page_id)
             
     if speech_to_text:
@@ -32,7 +32,9 @@ def page_config(page_id):
     with col2.container(height=525, border=False):
         for log in st.session_state.pages[page_id][1]:
             st.chat_message("ai").write(log)
-            st.markdown("---")
+
+def disable():
+    st.session_state.running = True
     
 def respond(prompt, page_id):
     # Optimize Prompt
@@ -40,12 +42,13 @@ def respond(prompt, page_id):
 
     # Save log
     st.session_state.pages[page_id][1].append(optimized["log"])
-
-    # Check for harmful content 
     st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
 
     response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
     st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+
+    st.session_state.running = False
+    st.rerun()
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object
