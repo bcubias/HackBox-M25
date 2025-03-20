@@ -18,9 +18,6 @@ if "current_page" not in st.session_state:
 if "count" not in st.session_state:
     st.session_state.count = 0
 
-if "char_limit" not in st.session_state:
-    st.session_state.char_limit = 4096
-
 if "open_settings" not in st.session_state:
     st.session_state.open_settings = None
 
@@ -63,8 +60,6 @@ with st.sidebar:
     with col3:
         st.write("")
         st.button("", help="Delete page", icon = ':material/delete:', on_click=delete_page, args=(st.session_state.current_page,))
-
-    st.session_state.char_limit = st.slider("Max Character Limit", 0, 4096, 4096)
 
     # Highlighting active session
     for page in st.session_state.pages:
