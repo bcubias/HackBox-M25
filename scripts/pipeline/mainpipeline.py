@@ -16,6 +16,7 @@ def optimizted_prompt(prompt):
 
     if harm >= 4:
         returnmes["log"] += f" | Content is not safe Level: {harm}"
+        print("harmful Message detected")
         returnmes["harm"] = 1
 
     else:

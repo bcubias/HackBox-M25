@@ -38,11 +38,10 @@ def respond(prompt, page_id):
       # Optimize Prompt
       optimized = optimizted_prompt(prompt)
 
-      # Save optimized prompt and log
+      # Save log
       log_text = f"Log: {optimized['log']}" if optimized.get("log") else ""
       prompt_text = f"Turns Into: {optimized["prompt"]}" if optimized.get("prompt") else ""
 
-      st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prevPrompt"]})
       st.session_state.pages[page_id][1].append(
           "Previous Prompt:" + optimized["prevPrompt"] + "\n"\
           + prompt_text + "\n"\
@@ -51,12 +50,15 @@ def respond(prompt, page_id):
 
       # Check for harmful content 
       if optimized["harm"]:
+          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prevPrompt"]})
           response = chat_with_gpt4o(optimized["prevPrompt"], "harm")
           st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
       elif optimized["vague"]:
+          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prevPrompt"]})
           response = chat_with_gpt4o(optimized["prevPrompt"], "vague")
           st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
-      else:
+      else:      
+          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
           response = chat_with_gpt4o(optimized["prompt"])
           st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
     
