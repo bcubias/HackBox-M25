@@ -5,7 +5,7 @@ def optimizted_prompt(prompt):
 
     # grammar check will happen here
     corrected_prompt = prompt
-    returnmes["log"] = f"grammar log"
+    returnmes["log"] = f"Old Prompt: {prompt}"
     returnmes["prompt"] = corrected_prompt
 
     harm = contentsafety.safety_check(corrected_prompt)

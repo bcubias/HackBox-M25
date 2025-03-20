@@ -15,7 +15,7 @@ def page_config(page_id):
     speech_to_text = st.button("Speech to Text")
   
     # User Input
-    if prompt := st.chat_input("Enter your message:", max_chars=st.session_state.char_limit):
+    if prompt := st.chat_input("Enter your message:", max_chars=4096):
         respond(prompt, page_id)
             
     if speech_to_text:
@@ -24,12 +24,12 @@ def page_config(page_id):
             respond(speech, page_id)
         
     # Display Messages & Logs
-    with col1:
+    with col1.container(height=525, border=False):
         for message in st.session_state.pages[page_id][0]:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    with col2:
+    with col2.container(height=525, border=False):
         for log in st.session_state.pages[page_id][1]:
             st.chat_message("ai").write(log)
             st.markdown("---")
