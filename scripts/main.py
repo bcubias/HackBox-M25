@@ -21,6 +21,9 @@ if "count" not in st.session_state:
 if "open_settings" not in st.session_state:
     st.session_state.open_settings = None
 
+if "running" not in st.session_state:
+    st.session_state.running = False
+
 if "show_clear_dialog" not in st.session_state:
     st.session_state.show_clear_dialog = False
 
@@ -69,8 +72,7 @@ with st.sidebar:
 
     with col2:
         st.write("")
-        st.button("", help="Add page", icon=":material/add:", on_click=add_page)
-
+        st.button("", help="Add page", icon=":material/add:", on_click=add_page, disabled=st.session_state.running)
     with col3:
         st.write("")
         st.button(
@@ -79,7 +81,7 @@ with st.sidebar:
             icon=":material/delete:", 
             key="delete_all_sessions",
             on_click=lambda: setattr(st.session_state, "show_clear_dialog", True),
-            disabled=len(st.session_state.pages) == 0
+            disabled=len(st.session_state.pages) == 0 or st.session_state.running
         )
 
     # Highlighting active session
@@ -91,14 +93,14 @@ with st.sidebar:
 
         with col1:
             st.button(page, help=f"Switch to {page}", use_container_width=True, type=button_type, 
-                      on_click=select_page, args=(page,))
+                      on_click=select_page, args=(page,), disabled=st.session_state.running)
 
         with col2:
             st.button(":material/more_horiz:", help="More options", key=f"more_btn_{page}", 
-                      on_click=toggle_settings, args=(page,))
+                      on_click=toggle_settings, args=(page,), disabled=st.session_state.running)
         
         if st.session_state.open_settings == page:
-            st.button(":material/delete: Remove", key=f"delete_btn_{page}", on_click=delete_page, args=(page,))
+            st.button(":material/delete: Remove", key=f"delete_btn_{page}", on_click=delete_page, args=(page,), disabled=st.session_state.running)
 
 @st.dialog("Confirm Deletion")
 def confirm_clear_dialog():

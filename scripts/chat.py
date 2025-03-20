@@ -13,10 +13,10 @@ def page_config(page_id):
 
     col1, col2 = st.columns([5, 2])
 
-    speech_to_text = st.button("Speech to Text")
+    speech_to_text = st.button("Speech to Text", disabled=st.session_state.running)
   
     # User Input
-    if prompt := st.chat_input("Enter your message:", max_chars=4096):
+    if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable()):
         respond(prompt, page_id)
             
     if speech_to_text:
@@ -39,11 +39,14 @@ def page_config(page_id):
                 st.button("", icon=":material/text_to_speech:", key=f"log_{page_id}_{i}", type="tertiary",  
                         on_click=text_to_speech, args=(log,), help="Text to Speech")
 
+
+def disable():
+    st.session_state.running = True
     
 def respond(prompt, page_id):
     with st.status("Optimizing prompt...", expanded=True) as status:
         st.write("Analyzing user input...")
-
+        
         # Optimize Prompt
         optimized = optimizted_prompt(prompt, status)
 
