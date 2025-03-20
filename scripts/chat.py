@@ -35,32 +35,17 @@ def page_config(page_id):
             st.markdown("---")
     
 def respond(prompt, page_id):
-      # Optimize Prompt
-      optimized = optimizted_prompt(prompt)
+    # Optimize Prompt
+    optimized = optimizted_prompt(prompt)
 
-      # Save log
-      log_text = f"Log: {optimized['log']}" if optimized.get("log") else ""
-      prompt_text = f"Turns Into: {optimized["prompt"]}" if optimized.get("prompt") else ""
+    # Save log
+    st.session_state.pages[page_id][1].append(optimized["log"])
 
-      st.session_state.pages[page_id][1].append(
-          "Previous Prompt:" + optimized["prevPrompt"] + "\n"\
-          + prompt_text + "\n"\
-          + log_text
-          )
+    # Check for harmful content 
+    st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
 
-      # Check for harmful content 
-      if optimized["harm"]:
-          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prevPrompt"]})
-          response = chat_with_gpt4o(optimized["prevPrompt"], "harm")
-          st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
-      elif optimized["vague"]:
-          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prevPrompt"]})
-          response = chat_with_gpt4o(optimized["prevPrompt"], "vague")
-          st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
-      else:      
-          st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
-          response = chat_with_gpt4o(optimized["prompt"])
-          st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+    response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
+    st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object

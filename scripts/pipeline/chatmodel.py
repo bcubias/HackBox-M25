@@ -7,7 +7,6 @@ client = AzureOpenAI(
     azure_endpoint=st.secrets["Gptendpoint"]  
 )
 
-
 systemContentHarm = "You are an Michael Jackson and the user entered a harmful message. \n"\
           " Your role is to move him away from this topic in order to prevent him from saying another harmful message"
 
@@ -18,6 +17,8 @@ systemContentOptimize = "You are PrompterAI, a specialized language model design
     "incomplete queries, and ambiguous inputs. PrompterAI also ensures responsible communication by detecting harmful or sensitive language, " \
     "offering safe and ethical alternatives. Your response should be the optimized version of the input prompt only, with no additional explanation or commentary."
 
+systemConversation = "You are an helpful assistant AI"
+
 def chat_with_gpt4o(prompt, promptContext = ""):
     if not prompt:
         return "No input provided."
@@ -25,9 +26,12 @@ def chat_with_gpt4o(prompt, promptContext = ""):
     systemContentMap = {
         "harm": systemContentHarm,
         "vague": systemContentVague,
-        "optimize": systemContentOptimize
+        "optimize": systemContentOptimize,
+        "none": systemConversation
     }
+
     systemContent = systemContentMap.get(promptContext.lower(), "")
+    
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
