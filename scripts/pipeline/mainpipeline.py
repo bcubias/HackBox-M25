@@ -1,4 +1,4 @@
-from . import contentsafety, grammar, chatmodel
+from . import contentsafety, grammar, chatmodel, vagueprompt
 
 def optimizted_prompt(prompt):
     returnmes = {}
@@ -13,8 +13,11 @@ def optimizted_prompt(prompt):
     if harm >= 4:
         returnmes["log"] += f" | Content is not safe Level: {harm}"
         returnmes["harm"] = 1
-    else:
-        # other operations will take place here
-        returnmes["harm"] = 0
+        return returnmes
+    
+    # other operations will take place here
+    returnmes["harm"] = 0
+    vague_check = vagueprompt.analyze_prompt(corrected_prompt)
+    returnmes["vague"] =  vague_check["status"] == "vague"
     
     return returnmes
