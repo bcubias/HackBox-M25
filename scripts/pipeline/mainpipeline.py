@@ -14,8 +14,8 @@ def optimizted_prompt(prompt):
     if harm >= 4:
         logs += f"\nContent is not safe Level: {harm}"
         message["warning"] = "harm"
-
-        print("harmful Message detected")
+        message["log"] += logs
+        return message
         
     vague_check = vagueprompt.analyze_prompt(prompt)
     
