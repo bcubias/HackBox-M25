@@ -130,7 +130,6 @@ def confirm_clear_dialog():
         reset_dialog_state()
         st.rerun()
 
-# **Fix: Prevent Dialog From Reopening**
 if st.session_state.show_clear_dialog:
     confirm_clear_dialog()
     st.session_state.show_clear_dialog = False
