@@ -1,6 +1,7 @@
 import streamlit as st
 from pipeline.chatmodel import chat_with_gpt4o
 from pipeline.mainpipeline import optimizted_prompt
+from tts import text_to_speech
 import azure.cognitiveservices.speech as speechsdk
 
 key = st.secrets.Azurekey
@@ -25,14 +26,19 @@ def page_config(page_id):
         
     # Display Messages & Logs
     with col1.container(height=525, border=False):
-        for message in st.session_state.pages[page_id][0]:
+        for i, message in enumerate(st.session_state.pages[page_id][0]):
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-
+                st.button("", icon=":material/text_to_speech:", key=f"chat_{page_id}_{i}", type="tertiary",  
+                    on_click=text_to_speech, args=(message["content"],), help="Text to Speech")
+                
     with col2.container(height=525, border=False):
-        for log in st.session_state.pages[page_id][1]:
-            st.chat_message("ai").write(log)
-            st.markdown("---")
+        for i, log in enumerate(st.session_state.pages[page_id][1]):
+            with st.chat_message("ai"):
+                st.markdown(log)
+                st.button("", icon=":material/text_to_speech:", key=f"log_{page_id}_{i}", type="tertiary",  
+                        on_click=text_to_speech, args=(log,), help="Text to Speech")
+
     
 def respond(prompt, page_id):
     with st.status("Optimizing prompt...", expanded=True) as status:
