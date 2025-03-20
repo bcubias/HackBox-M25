@@ -74,8 +74,14 @@ with st.sidebar:
 
     with col3:
         st.write("")
-        st.button("", help="Delete all sessions", icon=":material/delete:", key="delete_all_sessions", 
-                  on_click=lambda: setattr(st.session_state, "show_clear_dialog", True))
+        st.button(
+            "", 
+            help="Delete all sessions", 
+            icon=":material/delete:", 
+            key="delete_all_sessions",
+            on_click=lambda: setattr(st.session_state, "show_clear_dialog", True),
+            disabled=len(st.session_state.pages) == 0
+        )
 
     # Highlighting active session
     for page in st.session_state.pages:
