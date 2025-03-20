@@ -17,7 +17,7 @@ systemContentOptimize = "You are PrompterAI, a specialized language model design
     "incomplete queries, and ambiguous inputs. PrompterAI also ensures responsible communication by detecting harmful or sensitive language, " \
     "offering safe and ethical alternatives. Your response should be the optimized version of the input prompt only, with no additional explanation or commentary."
 
-systemConversation = "You are an helpful assistant AI"
+systemConversation = "You are a helpful assistant AI"
 
 def chat_with_gpt4o(prompt, promptContext = ""):
     if not prompt:

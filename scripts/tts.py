@@ -19,3 +19,5 @@ def text_to_speech(text):
             if cancellation_details.error_details:
                 print("Error details: {}".format(cancellation_details.error_details))
                 print("Did you set the speech resource key and region values?")
+
+    st.session_state.running = False
