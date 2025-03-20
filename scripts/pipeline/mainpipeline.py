@@ -5,16 +5,23 @@ def optimizted_prompt(prompt):
 
     # grammar check will happen here
     corrected_prompt = prompt
-    returnmes["log"] = f"grammar log"
-    returnmes["prompt"] = corrected_prompt
+    returnmes["log"] = ""
+    returnmes["prompt"] = ""
+    returnmes["harm"] = 0
+    returnmes["vague"] = 0
+    returnmes["prevPrompt"] = corrected_prompt
+    
 
     harm = contentsafety.safety_check(corrected_prompt)
 
     if harm >= 4:
         returnmes["log"] += f" | Content is not safe Level: {harm}"
         returnmes["harm"] = 1
+
     else:
-        # other operations will take place here
-        returnmes["harm"] = 0
+        
+        response = chatmodel.chat_with_gpt4o(corrected_prompt, "optimize")
+        returnmes["prompt"] = response
+        print(response)
     
     return returnmes
