@@ -44,18 +44,24 @@ def disable():
     st.session_state.running = True
     
 def respond(prompt, page_id):
-    # Optimize Prompt
-    optimized = optimizted_prompt(prompt)
+    with st.status("Optimizing prompt...", expanded=True) as status:
+        st.write("Analyzing user input...")
+        
+        # Optimize Prompt
+        optimized = optimizted_prompt(prompt, status)
 
-    # Save log
-    st.session_state.pages[page_id][1].append(optimized["log"])
-    st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
+        # Save log
+        st.session_state.pages[page_id][1].append(optimized["log"])
 
-    response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
-    st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+        # Check for harmful content 
+        st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
 
-    st.session_state.running = False
-    st.rerun()
+        st.write("Generating AI response...")
+
+        response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
+        st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+
+        status.update(label="Response complete!", state="complete", expanded=False)
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object
