@@ -28,7 +28,6 @@ if "dialog_was_open" not in st.session_state:
     st.session_state.dialog_was_open = False
 
 def reset_dialog_state():
-    """Ensure the dialog does not persist after being closed."""
     st.session_state.show_clear_dialog = False
     st.session_state.dialog_was_open = False
 
@@ -103,7 +102,6 @@ with st.sidebar:
 
 @st.dialog("Confirm Deletion")
 def confirm_clear_dialog():
-    """Popup dialog asking the user to confirm deleting all sessions."""
     st.session_state.dialog_was_open = True 
 
     st.markdown("""
