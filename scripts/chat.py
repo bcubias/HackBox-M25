@@ -62,6 +62,7 @@ def respond(prompt, page_id):
         st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
 
         status.update(label="Response complete!", state="complete", expanded=False)
+        st.rerun()
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object
