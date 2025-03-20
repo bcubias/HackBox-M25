@@ -35,19 +35,17 @@ def page_config(page_id):
             st.markdown("---")
     
 def respond(prompt, page_id):
-      # Optimize Prompt
-      optimized = optimizted_prompt(prompt)
+    # Optimize Prompt
+    optimized = optimizted_prompt(prompt)
 
-      # Save optimized prompt and log
-      st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
-      st.session_state.pages[page_id][1].append(optimized["log"])
+    # Save log
+    st.session_state.pages[page_id][1].append(optimized["log"])
 
-      # Check for harmful content 
-      if optimized["harm"]:
-          st.session_state.pages[page_id][0].append({"role": "assistant", "content": "Content is not safe, please try again."})
-      else:
-          response = chat_with_gpt4o(optimized["prompt"])
-          st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
+    # Check for harmful content 
+    st.session_state.pages[page_id][0].append({"role": "user", "content": optimized["prompt"]})
+
+    response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
+    st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
     
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object
