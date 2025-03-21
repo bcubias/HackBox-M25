@@ -19,12 +19,12 @@ This middle layer in between user and AI ensures safety and removes any bias, da
 
 # Demo Video
 
-#System Architecture
+# System Architecture
 ## System Design
 ![Untitled](https://github.com/user-attachments/assets/d2c4f714-0996-4f09-9c60-5f2d6e9c92eb)
 
 ## Process Flow
-![Untitled](https://github.com/user-attachments/assets/81f6b53c-e253-4540-8489-e98b6dd4a26a)
+![image](https://github.com/user-attachments/assets/e9fad775-f503-4479-a8dc-f3f92433bff6)
 
 # Running Locally
 Prerequisites
