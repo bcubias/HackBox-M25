@@ -40,6 +40,7 @@ def add_page():
     st.session_state.pages[new_id] = [[], []]
     st.session_state.current_page = new_id
     st.session_state.open_settings = None
+    st.session_state.running = False
 
 def delete_page(page):
     if page is None:
@@ -49,6 +50,7 @@ def delete_page(page):
         st.session_state.current_page = None
 
     del st.session_state.pages[page]
+    st.session_state.running = False
 
 def toggle_settings(page):
     if st.session_state.open_settings is None or st.session_state.open_settings != page:
@@ -72,7 +74,7 @@ with st.sidebar:
 
     with col2:
         st.write("")
-        st.button("", help="Add page", icon=":material/add:", on_click=add_page, disabled=st.session_state.running)
+        st.button("", help="Add page", icon=":material/add:", on_click=add_page, disabled=False)
     with col3:
         st.write("")
         st.button(
