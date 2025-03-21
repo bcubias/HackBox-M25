@@ -13,7 +13,7 @@ def page_config(page_id):
 
     col1, col2 = st.columns([5, 2])
 
-    speech_to_text = st.button(":material/mic:", help="Speech to Text", disabled=st.session_state.running)
+    speech_to_text = st.sidebar.button(":material/mic: Speech to Text", help="Speech to Text", disabled=st.session_state.running)
   
     # User Input
     if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable):

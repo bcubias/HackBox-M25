@@ -27,15 +27,15 @@ def safety_check(message):
         print(e)
         raise
 
-    harm = "Harm types: " 
+    harm = [] 
 
     hate_result = next(item for item in response.categories_analysis if item.category == TextCategory.HATE)
-    harm += "hate, " if hate_result.severity >= 4 else ""
+    harm.append("hate") if hate_result.severity >= 4 else ""
     self_harm_result = next(item for item in response.categories_analysis if item.category == TextCategory.SELF_HARM)
-    harm += "self, " if self_harm_result.severity >= 4 else ""
+    harm.append("self") if self_harm_result.severity >= 4 else ""
     sexual_result = next(item for item in response.categories_analysis if item.category == TextCategory.SEXUAL)
-    harm += "sexual, " if sexual_result.severity >= 4 else ""
+    harm.append("sexual") if sexual_result.severity >= 4 else ""
     violence_result = next(item for item in response.categories_analysis if item.category == TextCategory.VIOLENCE)
-    harm += "violence, " if violence_result.severity >= 4 else ""
+    harm.append("violence") if violence_result.severity >= 4 else ""
 
     return max(hate_result.severity, self_harm_result.severity, sexual_result.severity, violence_result.severity), harm

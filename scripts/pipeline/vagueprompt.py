@@ -30,6 +30,8 @@ def analyze_prompt(message):
             "message": "⚠️ This prompt lacks a specific noun or proper entity. Please include a name, place, or event."
         }
 
+    print(entities)
+
     return {
         "status": "clear",
         "entities_detected": entities
