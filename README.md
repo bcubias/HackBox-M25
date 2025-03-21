@@ -15,7 +15,7 @@ This middle layer in between user and AI ensures safety and removes any bias, da
 - Speech to Text: Azure Cognitive Services detects speech and translates it into text
 - Text Analysis: Uses Azure AI language and Azure AI Content Safety to analyze user prompt for harmful speech and keywords
 - Prompt Optimizer: Azure OpenAI is used to to convert the user prompt into an optimized prompt by (**PROCESS**)
-- Chatbot: Uses ChatGPT
+- Chatbot Model: Uses ChatGPT-4o 
 
 # Demo Video
 
