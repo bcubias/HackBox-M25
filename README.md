@@ -61,6 +61,6 @@ Run streamlit server
 # Future Improvements
 - Companies can use the middle layer on their services and not only on the streamlit server
 - Explore more ways to optimize and sanatize prompts
-- Develop optimization algorithms to create and choose from a pool of optimized prompts
+- Research and develop genetic algorithms to optimizate and choose from a pool of prompts
 - Develop AI to grade optimized prompts to compare different prompts
 - Implementation as a browser extension
