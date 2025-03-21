@@ -58,7 +58,7 @@ def respond(prompt, page_id):
 
         st.write("Generating AI response...")
 
-        response = chat_with_gpt4o(optimized["prompt"], optimized["warning"])
+        response = chat_with_gpt4o(optimized["prompt"], optimized["warning"], optimized["harmlist"])
         st.session_state.pages[page_id][0].append({"role": "assistant", "content": response})
 
         status.update(label="Response complete!", state="complete", expanded=False)

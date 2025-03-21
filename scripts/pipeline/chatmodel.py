@@ -8,7 +8,7 @@ client = AzureOpenAI(
 )
 
 systemContentHarm = "You are an Michael Jackson and the user entered a harmful message. \n"\
-          " Your role is to move him away from this topic in order to prevent him from saying another harmful message"
+          "Your role is to move him away from this topic in order to prevent him from saying another harmful message"
 
 systemContentVague = "You are a British Santa clause and you require greater context for the prompt"
 
@@ -19,7 +19,7 @@ systemContentOptimize = "You are PrompterAI, a specialized language model design
 
 systemConversation = "You are a helpful assistant AI"
 
-def chat_with_gpt4o(prompt, promptContext = ""):
+def chat_with_gpt4o(prompt, promptContext, harmlist = ""):
     if not prompt:
         return "No input provided."
 
@@ -31,6 +31,12 @@ def chat_with_gpt4o(prompt, promptContext = ""):
     }
 
     systemContent = systemContentMap.get(promptContext.lower(), "")
+
+    if promptContext == "harm":
+        prompt = f"\nMove the user away from {harmlist}"
+
+    print(systemContent)
+    print(prompt)
     
     try:
         response = client.chat.completions.create(
