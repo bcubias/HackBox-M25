@@ -8,6 +8,7 @@ def optimizted_prompt(prompt, status):
     message["log"] = f"Previous Prompt: {prompt}\n"
     message["prompt"] = prompt
     message["warning"] = "none"
+    message["harmlist"] = ""
 
     status.write("Checking for harmful content...")
     harm, harmlist = contentsafety.safety_check(prompt)
