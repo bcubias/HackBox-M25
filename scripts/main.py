@@ -30,6 +30,9 @@ if "show_clear_dialog" not in st.session_state:
 if "dialog_was_open" not in st.session_state:
     st.session_state.dialog_was_open = False
 
+if "rename_mode" not in st.session_state:
+    st.session_state.rename_mode = {}
+
 def reset_dialog_state():
     st.session_state.show_clear_dialog = False
     st.session_state.dialog_was_open = False
@@ -40,6 +43,7 @@ def add_page():
     st.session_state.pages[new_id] = [[], []]
     st.session_state.current_page = new_id
     st.session_state.open_settings = None
+    st.session_state.running = False
 
 def delete_page(page):
     if page is None:
@@ -48,10 +52,17 @@ def delete_page(page):
     if st.session_state.current_page == page:
         st.session_state.current_page = None
 
+    st.session_state.rename_mode.pop(page, None)
     del st.session_state.pages[page]
+    st.session_state.running = False
+
+    if len(st.session_state.pages) == 0:
+        st.session_state.count = 0 
 
 def toggle_settings(page):
-    if st.session_state.open_settings is None or st.session_state.open_settings != page:
+    for key in st.session_state.rename_mode:
+        st.session_state.rename_mode[key] = False
+    if st.session_state.open_settings != page:
         st.session_state.open_settings = page
     else:
         st.session_state.open_settings = None
@@ -63,6 +74,16 @@ def close_dialog():
 # Function to select active session(page)
 def select_page(page):
     st.session_state.current_page = page
+
+def rename_session(old_name):
+    new_name = st.session_state.get(f"rename_value_{old_name}", "").strip()
+    if new_name and new_name != old_name and new_name not in st.session_state.pages:
+        st.session_state.pages[new_name] = st.session_state.pages.pop(old_name)
+        if st.session_state.current_page == old_name:
+            st.session_state.current_page = new_name
+        st.session_state.rename_mode[new_name] = False
+        st.session_state.open_settings = None
+        st.rerun()
 
 with st.sidebar:
     col1, col2, col3 = st.columns([3, 1, 1])  
@@ -100,7 +121,24 @@ with st.sidebar:
                       on_click=toggle_settings, args=(page,), disabled=st.session_state.running)
         
         if st.session_state.open_settings == page:
-            st.button(":material/delete: Remove", key=f"delete_btn_{page}", on_click=delete_page, args=(page,), disabled=st.session_state.running)
+            with st.expander(":material/settings: Options", expanded=True):
+                if not st.session_state.rename_mode.get(page, False):
+                    if st.button(":material/edit: Rename", key=f"rename_btn_{page}"):
+                        st.session_state.rename_mode[page] = True
+                        st.rerun()
+                else:
+                    with st.form(key=f"rename_form_{page}", clear_on_submit=False):
+                        new_name = st.text_input("Rename session:", value=page, key=f"rename_value_{page}", label_visibility="collapsed")
+                        col_save, col_cancel = st.columns(2)
+                        submit = col_save.form_submit_button(":material/check: Save")
+                        cancel = col_cancel.form_submit_button(":material/close: Cancel")
+                        if submit:
+                            rename_session(page)
+                        if cancel:
+                            st.session_state.rename_mode[page] = False
+                            st.rerun()
+
+                st.button(":material/delete: Delete Session", key=f"delete_btn_{page}", on_click=delete_page, args=(page,), disabled=st.session_state.running)
 
 @st.dialog("Confirm Deletion")
 def confirm_clear_dialog():

@@ -5,10 +5,10 @@ def optimizted_prompt(prompt, status):
     logs = ""
 
     # int varibles
-    message["log"] = f"Previous Prompt: {prompt}\n"
+    message["log"] = f"User's prompt: {prompt}\n"
     message["prompt"] = prompt
     message["warning"] = "none"
-    message["harmlist"] = ""
+    message["harmlist"] = []
 
     status.write("Checking for harmful content...")
     harm, harmlist = contentsafety.safety_check(prompt)
@@ -28,9 +28,14 @@ def optimizted_prompt(prompt, status):
         logs += f"\nVague Message detected\n"
     else:
         status.write("Optimizing prompt...")
+        ner_list = "Entities recognized: "
+
+        for key in vague_check["entities_detected"]:
+            ner_list += f"{key}, "    
+        logs += f"\n{ner_list[:-2]}\n"
         response = chatmodel.chat_with_gpt4o(prompt, "optimize")
         message["prompt"] = response
-        message["log"] += f"\nTurns Into: {response}\n" 
+        message["log"] += f"\nTurns into: {response}\n" 
         print(response)
 
     message["log"] += logs    
