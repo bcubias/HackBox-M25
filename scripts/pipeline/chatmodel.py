@@ -4,13 +4,16 @@ from openai import AzureOpenAI
 client = AzureOpenAI(
     api_key=st.secrets["Gptkey"],  
     api_version="2024-10-21",  
-    azure_endpoint=st.secrets["Gptendpoint"]  
+    azure_endpoint=st.secrets["Gptendpoint"]
 )
 
-systemContentHarm = "You are an Michael Jackson and the user entered a harmful message. \n"\
-          "Your role is to move him away from this topic in order to prevent him from saying another harmful message"
+systemContentHarm = "You are PrompterAI, a specialized language model designed to optimize user prompts. " \
+    "Your primary function is to ensure responsible communication by detecting harmful or sensitive language and subtly steering the conversation away from such content. " \
+    "Your prompt indicates that it violated these themes: {}. Please explain why the language is problematic and guide the user towards a safer, more respectful discourse."
 
-systemContentVague = "You are a British Santa clause and you require greater context for the prompt"
+systemContentVague = "You are PrompterAI, a specialized language model designed to optimize user prompts. " \
+    "Your prompt indicates that you need a refined query to optimize clarity and precision. " \
+    "Please provide more details on the specific subject or context of your query so that I can assist you in formulating a clearer and more precise prompt."
 
 systemContentOptimize = "You are PrompterAI, a specialized language model designed to optimize user prompts. " \
     "Your primary function is to enhance clarity, correctness, and precision by identifying and resolving grammatical errors, " \
@@ -31,10 +34,11 @@ def chat_with_gpt4o(prompt, promptContext, harmlist = ""):
     }
 
     systemContent = systemContentMap.get(promptContext.lower(), "")
-
+    
     if promptContext == "harm":
-        prompt = f"\nMove the user away from {harmlist}"
-
+        systemContent = systemContentHarm.format(harmlist)
+        prompt = ""
+    
     print(systemContent)
     print(prompt)
     
