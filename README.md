@@ -24,7 +24,7 @@ This middle layer in between user and AI ensures safety and removes any bias, da
 ![Untitled](https://github.com/user-attachments/assets/d2c4f714-0996-4f09-9c60-5f2d6e9c92eb)
 
 ## Process Flow
-![image](https://github.com/user-attachments/assets/e9fad775-f503-4479-a8dc-f3f92433bff6)
+![Untitled](https://github.com/user-attachments/assets/80381a8b-eb9c-4f37-a2f6-a5570649d4dd)
 
 # Running Locally
 Prerequisites
