@@ -6,7 +6,7 @@ Microsoft HackBox Repo for March 2025
 # PrompterAI
 PrompterAI is a preprocessing layer that improves AI and LLM response quality by optimizing user prompts for clarity and completeness and flagging any potentially unethical or harmful messages.
 
-The current version of PrompterAI in this GitHub repository showcases a website where users can create chats and submit prompts to ChatGPT. After the user submits a prompt either through text or voice, the initial message will be scanned for harmful or explicit messaging, then keywords will be extracted and the prompt will be run through an AI along with keywords to create a final optimized prompt. The new prompt is sent to ChatGPT, producing a more accurate and relevant response.
+The current version of PrompterAI in this GitHub repository showcases a website where users can create chats and submit prompts to ChatGPT. After the user submits a prompt either through text or voice, the initial message will be scanned for harmful, explicit, and vague messaging, then keywords will be extracted and the prompt will be run through an AI along with keywords to create a final optimized prompt. The new prompt is sent to ChatGPT, producing a more accurate and relevant response.
 
 This middle layer in between user and AI ensures safety and removes any bias, danger, and potential risk from reaching the AI.
 
@@ -19,10 +19,12 @@ This middle layer in between user and AI ensures safety and removes any bias, da
 
 # Demo Video
 
-#System Architecture
+# System Architecture
 ## System Design
+![Untitled](https://github.com/user-attachments/assets/d2c4f714-0996-4f09-9c60-5f2d6e9c92eb)
 
 ## Process Flow
+![Untitled](https://github.com/user-attachments/assets/80381a8b-eb9c-4f37-a2f6-a5570649d4dd)
 
 # Running Locally
 Prerequisites
@@ -61,3 +63,4 @@ Run streamlit server
 - Explore more ways to optimize and sanatize prompts
 - Develop optimization algorithms to create and choose from a pool of optimized prompts
 - Develop AI to grade optimized prompts to compare different prompts
+- Implementation as a browser extension

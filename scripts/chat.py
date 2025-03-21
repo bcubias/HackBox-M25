@@ -16,7 +16,7 @@ def page_config(page_id):
     speech_to_text = st.button("Speech to Text", disabled=st.session_state.running)
   
     # User Input
-    if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable()):
+    if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable):
         respond(prompt, page_id)
             
     if speech_to_text:
@@ -63,7 +63,7 @@ def respond(prompt, page_id):
         status.update(label="Response complete!", state="complete", expanded=False)
         st.session_state.running = False
         st.rerun()
-    
+
 def recognize_microphone(key, region, language = "en-US"):
     # Create a speech configuration object
     speech_config = speechsdk.SpeechConfig(subscription=key, region=region)
