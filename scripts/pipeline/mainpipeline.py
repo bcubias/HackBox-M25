@@ -10,11 +10,12 @@ def optimizted_prompt(prompt, status):
     message["warning"] = "none"
 
     status.write("Checking for harmful content...")
-    harm = contentsafety.safety_check(prompt)
+    harm, harmlist = contentsafety.safety_check(prompt)
 
     if harm >= 4:
         logs += f"\nContent is not safe Level: {harm}\n"
         message["warning"] = "harm"
+        message["harmlist"] = harmlist
         message["log"] += logs
         return message
         

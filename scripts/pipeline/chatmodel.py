@@ -19,7 +19,7 @@ systemContentOptimize = "You are PrompterAI, a specialized language model design
 
 systemConversation = "You are a helpful assistant AI"
 
-def chat_with_gpt4o(prompt, promptContext = ""):
+def chat_with_gpt4o(prompt, promptContext = "", harmlist = ""):
     if not prompt:
         return "No input provided."
 
@@ -31,6 +31,9 @@ def chat_with_gpt4o(prompt, promptContext = ""):
     }
 
     systemContent = systemContentMap.get(promptContext.lower(), "")
+
+    if promptContext == "harm":
+        systemContent += f"\nMove them away from {harmlist}"
     
     try:
         response = client.chat.completions.create(
