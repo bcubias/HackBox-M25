@@ -14,56 +14,31 @@ def page_config(page_id):
     col1, col2 = st.columns([5, 2])
 
     speech_to_text = st.button("Speech to Text", disabled=st.session_state.running)
-
-    prompt = st.chat_input(
-        "Enter your message or attach a file...",
-        max_chars=4096,
-        accept_file=True,
-        file_type=["jpg", "jpeg", "png", "pdf", "txt"]
-    )
-
-    if prompt:
-        if prompt.text:
-            respond(prompt.text, page_id)
-
-        if prompt.files:
-            uploaded_file = prompt.files[0]
-            file_name = uploaded_file.name
-            file_type = uploaded_file.type
-
-            st.write(f"📎 Uploaded file: **{file_name}** ({file_type})")
-
-            if file_type in ["image/jpeg", "image/png"]:
-                st.image(uploaded_file)
-
-            elif file_type == "text/plain":
-                content = uploaded_file.read().decode("utf-8")
-                st.text_area("📄 File Content:", value=content, height=200)
-
-            st.session_state.pages[page_id][0].append(
-                {"role": "user", "content": f"📎 Uploaded file: {file_name}"}
-            )
-
+  
+    # User Input
+    if prompt := st.chat_input("Enter your message:", max_chars=4096, on_submit=disable()):
+        respond(prompt, page_id)
+            
     if speech_to_text:
         speech = recognize_microphone(key, region)
         if speech:
             respond(speech, page_id)
-
+        
     # Display Messages & Logs
     with col1.container(height=525, border=False):
         for i, message in enumerate(st.session_state.pages[page_id][0]):
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-                st.button("", icon=":material/text_to_speech:", key=f"chat_{page_id}_{i}", type="tertiary",
+                st.button("", icon=":material/text_to_speech:", key=f"chat_{page_id}_{i}", type="tertiary",  
                     on_click=text_to_speech, args=(message["content"],), help="Text to Speech")
-
+                
     with col2.container(height=525, border=False):
         for i, log in enumerate(st.session_state.pages[page_id][1]):
             with st.chat_message("ai"):
                 st.markdown(log)
-                st.button("", icon=":material/text_to_speech:", key=f"log_{page_id}_{i}", type="tertiary",
+                st.button("", icon=":material/text_to_speech:", key=f"log_{page_id}_{i}", type="tertiary",  
                         on_click=text_to_speech, args=(log,), help="Text to Speech")
-                
+
 def disable():
     st.session_state.running = True
     
