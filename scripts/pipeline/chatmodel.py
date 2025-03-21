@@ -63,4 +63,3 @@ def chat_with_gpt4o(prompt, promptContext, harmlist = ""):
 
     except Exception as e:
         return f"Error: {str(e)}"
-    
